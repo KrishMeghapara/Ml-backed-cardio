@@ -19,14 +19,22 @@ def load_model():
     """Load the trained model"""
     global model
     try:
-        # Try to load the model (you'll need to save your trained model here)
-        model_path = 'cardio_model.joblib'
+        # Use decision tree model (smaller file size - 40MB)
+        model_path = 'decision_tree_model.pkl'
         if os.path.exists(model_path):
-            model = joblib.load(model_path)
-            print("Model loaded successfully!")
+            import pickle
+            with open(model_path, 'rb') as f:
+                model = pickle.load(f)
+            print(f"Model loaded successfully from {model_path}!")
         else:
-            print("Model file not found. Please train and save your model first.")
-            return False
+            # Fallback to joblib format
+            model_path_alt = 'cardio_model.joblib'
+            if os.path.exists(model_path_alt):
+                model = joblib.load(model_path_alt)
+                print(f"Model loaded successfully from {model_path_alt}!")
+            else:
+                print("Model file not found. Please train and save your model first.")
+                return False
     except Exception as e:
         print(f"Error loading model: {e}")
         return False

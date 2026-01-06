@@ -4,10 +4,13 @@ __pycache__/
 *.pyo
 *.pyd
 
-# Large model files (upload separately to cloud storage)
+# Large model files (exclude files over 100MB)
 *.joblib
-*.pkl
+cardio_model.pkl
 *.h5
+
+# Keep the small decision tree model (40MB)
+!decision_tree_model.pkl
 .Python
 env/
 venv/
