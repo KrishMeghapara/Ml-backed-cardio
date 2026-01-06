@@ -102,8 +102,9 @@ def preprocess_data(data):
     df['bmi'] = df['weight'] / ((df['height'] / 100) ** 2)
     
     # Select features in the same order as training
-    # Note: Adjust this based on your actual model features
-    feature_columns = ['age', 'gender', 'height', 'weight', 'ap_hi', 'ap_lo', 
+    # Model was trained with: X = df_scaled.drop(columns=['id','cardio','weight','height'], axis=1)
+    # So we use: age, gender, ap_hi, ap_lo, cholesterol, gluc, smoke, alco, active, bmi
+    feature_columns = ['age', 'gender', 'ap_hi', 'ap_lo', 
                       'cholesterol', 'gluc', 'smoke', 'alco', 'active', 'bmi']
     
     return df[feature_columns]
