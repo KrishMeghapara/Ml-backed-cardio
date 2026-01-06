@@ -1,0 +1,67 @@
+{
+  "feature_columns": [
+    "age",
+    "gender",
+    "height",
+    "weight",
+    "ap_hi",
+    "ap_lo",
+    "cholesterol",
+    "gluc",
+    "smoke",
+    "alco",
+    "active",
+    "bmi"
+  ],
+  "model_accuracy": 0.7134639190271609,
+  "feature_importance": [
+    {
+      "feature": "age",
+      "importance": 0.26130386353435064
+    },
+    {
+      "feature": "ap_hi",
+      "importance": 0.1662093592834417
+    },
+    {
+      "feature": "bmi",
+      "importance": 0.16004943004051325
+    },
+    {
+      "feature": "weight",
+      "importance": 0.11594677035201573
+    },
+    {
+      "feature": "height",
+      "importance": 0.1105348168039219
+    },
+    {
+      "feature": "ap_lo",
+      "importance": 0.08600966726584315
+    },
+    {
+      "feature": "cholesterol",
+      "importance": 0.0381286267917001
+    },
+    {
+      "feature": "gluc",
+      "importance": 0.016335709538224823
+    },
+    {
+      "feature": "gender",
+      "importance": 0.016004072536936254
+    },
+    {
+      "feature": "active",
+      "importance": 0.013467491056257755
+    },
+    {
+      "feature": "smoke",
+      "importance": 0.008876005147352744
+    },
+    {
+      "feature": "alco",
+      "importance": 0.007134187649441871
+    }
+  ]
+}
