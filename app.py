@@ -14,10 +14,11 @@ CORS(app, origins=cors_origins, methods=['GET', 'POST', 'OPTIONS'], allow_header
 
 # Global variable to store the model
 model = None
+scaler = None
 
 def load_model():
     """Load the trained model"""
-    global model
+    global model, scaler
     try:
         # Use decision tree model (smaller file size - 40MB)
         model_path = 'decision_tree_model.pkl'
@@ -38,6 +39,20 @@ def load_model():
     except Exception as e:
         print(f"Error loading model: {e}")
         return False
+    try:
+        # Load scaler
+        scaler_path = 'scaler.pkl'
+        if os.path.exists(scaler_path):
+            import pickle
+            with open(scaler_path, 'rb') as f:
+                scaler = pickle.load(f)
+            print(f"Scaler loaded successfully from {scaler_path}!")
+        else:
+            print("Scaler file not found. Input data will not be scaled (Risk of inaccurate predictions).")
+            
+    except Exception as e:
+        print(f"Error loading scaler: {e}")
+        
     return True
 
 def validate_input(data):
@@ -98,9 +113,24 @@ def preprocess_data(data):
     # Create a DataFrame with the input data
     df = pd.DataFrame([data])
     
+    # Convert gender from 1/2 to 0/1 (0=Female, 1=Male)
+    # The model was trained with gender - 1
+    if 'gender' in df.columns:
+        df['gender'] = df['gender'] - 1
+    
     # Calculate BMI (Body Mass Index)
+    # Height is in cm, convert to m
     df['bmi'] = df['weight'] / ((df['height'] / 100) ** 2)
     
+    # Apply scaling if scaler is available
+    if scaler is not None:
+        numerical_features = ['age', 'height', 'weight', 'ap_hi', 'ap_lo', 'bmi']
+        # Ensure columns exist and are in correct order
+        if all(col in df.columns for col in numerical_features):
+            df[numerical_features] = scaler.transform(df[numerical_features])
+        else:
+            print("Warning: Missing numerical columns for scaling")
+
     # Select features in the same order as training
     # Model was trained with: X = df_scaled.drop(columns=['id','cardio','weight','height'], axis=1)
     # So we use: age, gender, ap_hi, ap_lo, cholesterol, gluc, smoke, alco, active, bmi
